@@ -10,6 +10,7 @@ gem 'rails', '3.2.18'
 group :development, :test do
   gem 'sqlite3'
   gem 'debugger'
+  gem 'factory_girl_rails'
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
