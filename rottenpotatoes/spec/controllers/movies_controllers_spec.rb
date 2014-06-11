@@ -263,4 +263,44 @@ describe MoviesController do
         flash[:notice].should eq("Movie '#{@movie.title}' deleted.")
     end
   end
+
+  # HW4, Part 2, Scenario 2
+  describe "Find movies with the same director action" do
+    before :each do
+      @movieA = FactoryGirl.create(:movie)
+      @movie_no_director = FactoryGirl.create(:movie, director: nil)
+    end
+    it "has a RESTful URI: /movies/5/same_director" do
+      expected_route = '/movies/5/same_director'
+      assert_routing(expected_route,
+                     { :controller => "movies",
+                       :action => "same_director",
+                       :id => "5"})
+    end
+    it "grabs the id of the movie from params" do
+      get :same_director, id: @movieA
+      controller.params[:id].should eq(@movieA.id.to_s)
+      assigns(:movie).should eq(@movieA)
+    end
+    it "fetch the movie from the database" do
+      get :same_director, id: @movieA
+      assigns(:movie).should eq(@movieA)
+    end
+    it "calls the Model method find_movies_same_director" do
+      Movie.should_receive(:find_movies_same_director).with(@movieA)
+      get :same_director, id: @movieA
+    end
+    it "renders the :same_director view" do
+      get :same_director, id: @movieA
+      response.should render_template :same_director
+    end
+    it "redirects to :show with an error message if the movie has no director (sad path)" do
+      get :same_director, id: @movie_no_director
+      flash[:notice].should_not be_nil
+      flash[:notice].should eq("Movie '#{@movie_no_director.title}' has no director.")
+
+      response.should be_redirect
+      response.should redirect_to movie_path(@movie_no_director)
+    end
+  end
 end

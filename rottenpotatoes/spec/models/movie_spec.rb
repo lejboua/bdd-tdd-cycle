@@ -41,4 +41,31 @@ describe Movie do
       end
     end
   end
+  describe 'finds movies with the same director' do
+    before :each do
+      @movieA = FactoryGirl.create(:movie, director: 'DIRECTOR_A')
+      @movieB = FactoryGirl.create(:movie, director: 'DIRECTOR_A')
+      @movieC = FactoryGirl.create(:movie, director: 'DIRECTOR_B')
+      @movieD = FactoryGirl.create(:movie, director: 'DIRECTOR_C')
+    end
+    context 'exist other movies with the same director' do
+      it 'returns all the movies with the same director' do
+        director_to_search = 'DIRECTOR_A'
+        movie = FactoryGirl.create(:movie, director: director_to_search)
+
+        result = Movie.find_movies_same_director(movie)
+        result.count.should eq(3)
+        result.map { |m| m.director }.each { |d| d.should eq(director_to_search) }
+      end
+    end
+    context "didn't exist other movies with the same director" do
+      it 'returns just this movie' do
+        movie = FactoryGirl.create(:movie, director: 'DIRECTOR_X')
+
+        result = Movie.find_movies_same_director(movie)
+        result.count.should eq(1)
+        result.should eq([movie])
+      end
+    end
+  end
 end

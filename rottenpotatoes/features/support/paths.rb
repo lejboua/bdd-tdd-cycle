@@ -22,6 +22,13 @@ module NavigationHelpers
       '/'
       edit_movie_path(Movie.find_by_title($1))
 
+
+    # HW4, Part2, Scenario 2
+    # mapping from the details page for "Star Wars"
+    when /^the details page for "(.*)"$/
+      '/'
+      movie_path(Movie.find_by_title($1))
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
