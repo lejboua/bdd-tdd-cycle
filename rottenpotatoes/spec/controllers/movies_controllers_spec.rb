@@ -297,10 +297,10 @@ describe MoviesController do
     it "redirects to :show with an error message if the movie has no director (sad path)" do
       get :same_director, id: @movie_no_director
       flash[:notice].should_not be_nil
-      flash[:notice].should eq("Movie '#{@movie_no_director.title}' has no director.")
+      flash[:notice].should eq("'#{@movie_no_director.title}' has no director info.")
 
       response.should be_redirect
-      response.should redirect_to movie_path(@movie_no_director)
+      response.should redirect_to movies_path
     end
   end
 end

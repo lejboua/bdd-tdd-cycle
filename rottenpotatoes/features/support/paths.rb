@@ -14,20 +14,23 @@ module NavigationHelpers
     case page_name
 
     when /^the home\s?page$/
-      '/'
+      '/movies'
 
     # HW4, Part2, Scenario 1
     # adding a line or two to features/support/paths.rb
     when /^the edit page for "(.*)"$/
-      '/'
       edit_movie_path(Movie.find_by_title($1))
 
 
     # HW4, Part2, Scenario 2
     # mapping from the details page for "Star Wars"
     when /^the details page for "(.*)"$/
-      '/'
       movie_path(Movie.find_by_title($1))
+
+    # HW4, Part2, Scenario 2
+    # mapping from the Similar Movies page for "Star Wars"
+    when /^the Similar Movies page for "(.*)"$/
+      same_director_movie_path(Movie.find_by_title($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
